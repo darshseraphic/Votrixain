@@ -51,7 +51,7 @@
       themeToggle.setAttribute('title', isDark ? 'Switch to light theme' : 'Switch to dark theme');
     }
     const metaTheme = document.querySelector('meta[name="theme-color"]');
-    if (metaTheme) metaTheme.setAttribute('content', isDark ? '#2b2b2b' : '#ffffff');
+    if (metaTheme) metaTheme.setAttribute('content', isDark ? '#101010' : '#f1f1f1');
   };
 
   let savedTheme = '';

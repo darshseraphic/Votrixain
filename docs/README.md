@@ -1,6 +1,6 @@
 # Votrixain website
 
-A responsive, static landing page for the Votrixain Chrome extension. It uses the existing monochrome light theme and graphite dark theme, with a narrower content measure and responsive layouts for phones, tablets and desktop screens.
+A responsive, static landing page for the Votrixain Chrome extension. Its light and dark themes use the same neutral ink-and-paper palette as the browser extension, with responsive layouts for phones, tablets and desktop screens.
 
 ## Install into the Votrixain repository
 
@@ -25,7 +25,7 @@ The public source repository is configured in `config.js`:
 ## Included files
 
 - `index.html` — page structure and content
-- `styles.css` — responsive layout, monochrome palette, theme states and motion preferences
+- `styles.css` — responsive layout, shared extension color tokens, theme states and motion preferences
 - `script.js` — theme persistence, accessible mobile navigation, repository links and copy interaction
 - `config.js` — public repository URL
 - `assets/logo.svg` — local bridge to the existing `icons/logo.svg` source asset
@@ -37,4 +37,4 @@ The design direction and UI craft checklist were informed by **Unslop** by Damir
 
 ## Themes
 
-The light theme uses white, near-white and neutral gray. The dark theme uses a graphite base (`#2B2B2B`) with lifted charcoal surfaces (`#333333`, `#383838`) and neutral detail (`#423F3E`). There is no colored accent.
+The website mirrors the extension palette. Light mode uses a `#F1F1F1` page, white surfaces, `#171717` ink and neutral gray borders. Dark mode uses a `#101010` page, `#1B1B1B` surfaces, `#F4F4F4` ink and neutral gray borders. Primary actions use the same light/dark button contrast as the extension. There is no colored accent.
