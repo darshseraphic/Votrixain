@@ -1,0 +1,13 @@
+{
+  "name": "votrixain-chrome-extension",
+  "version": "0.4.4",
+  "private": false,
+  "description": "A local-first Chrome extension for removing known tracking parameters from URLs.",
+  "license": "MIT",
+  "scripts": {
+    "test": "node --test tests/*.test.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

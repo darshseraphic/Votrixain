@@ -1,0 +1,296 @@
+[
+  {
+    "id": 1,
+    "priority": 10,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "transform": {
+          "query": ""
+        }
+      }
+    },
+    "condition": {
+      "regexFilter": "^https?://(www\\.)?instagram\\.com/(reel|p)/[^?#]+\\?[^#]+",
+      "isUrlFilterCaseSensitive": false,
+      "resourceTypes": [
+        "main_frame"
+      ]
+    }
+  },
+  {
+    "id": 2,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "transform": {
+          "queryTransform": {
+            "removeParams": [
+              "utm_source",
+              "utm_medium",
+              "utm_campaign",
+              "utm_term",
+              "utm_content",
+              "utm_id",
+              "utm_source_platform",
+              "utm_creative_format",
+              "utm_marketing_tactic",
+              "utm_referrer",
+              "utm_reader",
+              "utm_name",
+              "fbclid",
+              "gclid",
+              "dclid",
+              "gbraid",
+              "wbraid",
+              "msclkid",
+              "igshid",
+              "cplk",
+              "mc_cid",
+              "mc_eid",
+              "mkt_tok",
+              "srsltid",
+              "ttclid",
+              "twclid",
+              "li_fat_id",
+              "epik",
+              "fb_action_ids",
+              "fb_action_types",
+              "fb_source",
+              "scid",
+              "obrf"
+            ]
+          }
+        }
+      }
+    },
+    "condition": {
+      "regexFilter": "^https?://[^?#]+\\?(?:[^#&]*&)*(?:utm_source|utm_medium|utm_campaign|utm_term|utm_content|utm_id|utm_source_platform)(?:=|&|#|$)",
+      "isUrlFilterCaseSensitive": false,
+      "resourceTypes": [
+        "main_frame"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "transform": {
+          "queryTransform": {
+            "removeParams": [
+              "utm_source",
+              "utm_medium",
+              "utm_campaign",
+              "utm_term",
+              "utm_content",
+              "utm_id",
+              "utm_source_platform",
+              "utm_creative_format",
+              "utm_marketing_tactic",
+              "utm_referrer",
+              "utm_reader",
+              "utm_name",
+              "fbclid",
+              "gclid",
+              "dclid",
+              "gbraid",
+              "wbraid",
+              "msclkid",
+              "igshid",
+              "cplk",
+              "mc_cid",
+              "mc_eid",
+              "mkt_tok",
+              "srsltid",
+              "ttclid",
+              "twclid",
+              "li_fat_id",
+              "epik",
+              "fb_action_ids",
+              "fb_action_types",
+              "fb_source",
+              "scid",
+              "obrf"
+            ]
+          }
+        }
+      }
+    },
+    "condition": {
+      "regexFilter": "^https?://[^?#]+\\?(?:[^#&]*&)*(?:utm_creative_format|utm_marketing_tactic|utm_referrer|utm_reader|utm_name|fbclid|gclid)(?:=|&|#|$)",
+      "isUrlFilterCaseSensitive": false,
+      "resourceTypes": [
+        "main_frame"
+      ]
+    }
+  },
+  {
+    "id": 4,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "transform": {
+          "queryTransform": {
+            "removeParams": [
+              "utm_source",
+              "utm_medium",
+              "utm_campaign",
+              "utm_term",
+              "utm_content",
+              "utm_id",
+              "utm_source_platform",
+              "utm_creative_format",
+              "utm_marketing_tactic",
+              "utm_referrer",
+              "utm_reader",
+              "utm_name",
+              "fbclid",
+              "gclid",
+              "dclid",
+              "gbraid",
+              "wbraid",
+              "msclkid",
+              "igshid",
+              "cplk",
+              "mc_cid",
+              "mc_eid",
+              "mkt_tok",
+              "srsltid",
+              "ttclid",
+              "twclid",
+              "li_fat_id",
+              "epik",
+              "fb_action_ids",
+              "fb_action_types",
+              "fb_source",
+              "scid",
+              "obrf"
+            ]
+          }
+        }
+      }
+    },
+    "condition": {
+      "regexFilter": "^https?://[^?#]+\\?(?:[^#&]*&)*(?:dclid|gbraid|wbraid|msclkid|igshid|cplk|mc_cid)(?:=|&|#|$)",
+      "isUrlFilterCaseSensitive": false,
+      "resourceTypes": [
+        "main_frame"
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "transform": {
+          "queryTransform": {
+            "removeParams": [
+              "utm_source",
+              "utm_medium",
+              "utm_campaign",
+              "utm_term",
+              "utm_content",
+              "utm_id",
+              "utm_source_platform",
+              "utm_creative_format",
+              "utm_marketing_tactic",
+              "utm_referrer",
+              "utm_reader",
+              "utm_name",
+              "fbclid",
+              "gclid",
+              "dclid",
+              "gbraid",
+              "wbraid",
+              "msclkid",
+              "igshid",
+              "cplk",
+              "mc_cid",
+              "mc_eid",
+              "mkt_tok",
+              "srsltid",
+              "ttclid",
+              "twclid",
+              "li_fat_id",
+              "epik",
+              "fb_action_ids",
+              "fb_action_types",
+              "fb_source",
+              "scid",
+              "obrf"
+            ]
+          }
+        }
+      }
+    },
+    "condition": {
+      "regexFilter": "^https?://[^?#]+\\?(?:[^#&]*&)*(?:mc_eid|mkt_tok|srsltid|ttclid|twclid|li_fat_id|epik)(?:=|&|#|$)",
+      "isUrlFilterCaseSensitive": false,
+      "resourceTypes": [
+        "main_frame"
+      ]
+    }
+  },
+  {
+    "id": 6,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "transform": {
+          "queryTransform": {
+            "removeParams": [
+              "utm_source",
+              "utm_medium",
+              "utm_campaign",
+              "utm_term",
+              "utm_content",
+              "utm_id",
+              "utm_source_platform",
+              "utm_creative_format",
+              "utm_marketing_tactic",
+              "utm_referrer",
+              "utm_reader",
+              "utm_name",
+              "fbclid",
+              "gclid",
+              "dclid",
+              "gbraid",
+              "wbraid",
+              "msclkid",
+              "igshid",
+              "cplk",
+              "mc_cid",
+              "mc_eid",
+              "mkt_tok",
+              "srsltid",
+              "ttclid",
+              "twclid",
+              "li_fat_id",
+              "epik",
+              "fb_action_ids",
+              "fb_action_types",
+              "fb_source",
+              "scid",
+              "obrf"
+            ]
+          }
+        }
+      }
+    },
+    "condition": {
+      "regexFilter": "^https?://[^?#]+\\?(?:[^#&]*&)*(?:fb_action_ids|fb_action_types|fb_source|scid|obrf)(?:=|&|#|$)",
+      "isUrlFilterCaseSensitive": false,
+      "resourceTypes": [
+        "main_frame"
+      ]
+    }
+  }
+]

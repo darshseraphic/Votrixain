@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Votrixain</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <a class="brand-lockup" href="#main" aria-label="Votrixain home">
+        <img class="brand-mark" src="icons/icon48.png" alt="" width="36" height="36">
+        <span class="brand-name">Votrixain</span>
+      </a>
+      <button id="themeButton" class="theme-button" type="button" aria-label="Change theme" title="Change theme">
+        <svg id="themeIcon" viewBox="0 0 20 20" aria-hidden="true"><rect x="3.8" y="4.5" width="12.4" height="9.2" rx="1.4"/><path d="M8 17h4m-2-3.3V17"/></svg>
+        <span id="themeLabel">System</span>
+      </button>
+    </header>
+
+    <section class="intro" id="main" aria-labelledby="headline">
+      <p class="eyebrow">Link privacy</p>
+      <h1 id="headline">Clean a link<br>before you share it</h1>
+      <p class="intro-copy">Remove known tracking tags while keeping the parts a link needs to work.</p>
+    </section>
+
+    <section class="work-card" aria-label="Clean a link">
+      <div class="section-heading">
+        <label for="inputUrl">Link to clean</label>
+        <button id="clearBtn" class="text-button" type="button">Clear</button>
+      </div>
+
+      <div class="input-wrap">
+        <textarea id="inputUrl" rows="3" spellcheck="false" autocapitalize="off" autocomplete="off" placeholder="https://example.com/page?utm_source=…" aria-describedby="inputHint"></textarea>
+      </div>
+
+      <div class="input-foot">
+        <span id="inputHint" class="privacy-hint">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2.8 16 5v4.4c0 3.7-2.3 6.5-6 7.9-3.7-1.4-6-4.2-6-7.9V5l6-2.2Z"/><path d="m7.5 9.8 1.7 1.7 3.5-3.7"/></svg>
+          Runs on this device
+        </span>
+        <span class="shortcut"><kbd>⌘</kbd> / <kbd>Ctrl</kbd> <kbd>↵</kbd></span>
+      </div>
+
+      <button id="cleanBtn" class="primary-button" type="button">
+        <span>Clean link</span>
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11m-4-4 4 4-4 4"/></svg>
+      </button>
+
+      <p id="status" class="status-line" role="status" aria-live="polite">
+        <svg class="status-icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="6.6"/><path d="M10 6.7v3.8m0 2.8h.01"/></svg>
+        <span id="statusText">Paste a link to begin</span>
+      </p>
+    </section>
+
+    <section class="access-section" aria-label="Automatic cleaning permissions">
+      <div class="access-card">
+        <div class="access-heading">
+          <span class="access-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 3.5 19 6v5.1c0 4.1-2.7 7.5-7 9.4-4.3-1.9-7-5.3-7-9.4V6l7-2.5Z"/><path d="m9 12 2 2 4-4"/></svg>
+          </span>
+          <div class="access-copy">
+            <h2 id="accessTitle">Automatic cleaning</h2>
+            <p id="accessDescription">Enable it only for a site you choose</p>
+          </div>
+        </div>
+        <button id="accessBtn" class="access-button" type="button" disabled>Checking</button>
+      </div>
+      <p class="access-note" id="accessNote">Optional site access. Manual cleaning works without it.</p>
+    </section>
+
+    <section id="resultSection" class="result-card" hidden aria-labelledby="resultTitle">
+      <div class="result-heading">
+        <div class="result-heading-copy">
+          <span class="result-check" aria-hidden="true">
+            <svg viewBox="0 0 20 20"><path d="m4.5 10.2 3.6 3.5 7.4-7.4"/></svg>
+          </span>
+          <div>
+            <h2 id="resultTitle">Cleaned link</h2>
+            <p id="resultSummary">Tracking parameters removed</p>
+          </div>
+        </div>
+        <span id="removedBadge" class="removed-badge">Clean</span>
+      </div>
+
+      <div class="output-wrap">
+        <textarea id="outputUrl" rows="2" readonly aria-label="Cleaned URL" spellcheck="false"></textarea>
+      </div>
+
+      <div id="detailRow" class="detail-row" hidden>
+        <span id="detailText">Removed tracking parameters</span>
+      </div>
+
+      <div class="result-actions">
+        <button id="copyBtn" class="copy-button" type="button">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="6" width="9" height="11" rx="1.8"/><path d="M13 6V4.8A1.8 1.8 0 0 0 11.2 3H5.8A1.8 1.8 0 0 0 4 4.8v7.4A1.8 1.8 0 0 0 5.8 14H7"/></svg>
+          <span>Copy link</span>
+        </button>
+        <button id="openBtn" class="open-button" type="button">
+          <span>Open link</span>
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M11 4h5v5m-.5-4.5L9 11m-1-5H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-3"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <footer class="trust-footer">
+      <div class="trust-mark" aria-hidden="true">
+        <svg viewBox="0 0 20 20"><path d="M10 2.8 16 5v4.4c0 3.7-2.3 6.5-6 7.9-3.7-1.4-6-4.2-6-7.9V5l6-2.2Z"/><path d="m7.5 9.8 1.7 1.7 3.5-3.7"/></svg>
+      </div>
+      <div class="trust-copy">
+        <strong>Private by design</strong>
+        <span>No account, analytics or remote link processing</span>
+      </div>
+      <span class="version">0.4.4</span>
+    </footer>
+  </main>
+  <script src="url-cleaner.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
