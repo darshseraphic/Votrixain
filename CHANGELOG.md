@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Added full query-string removal for GitHub links and X/Twitter status links in manual cleanup and automatic top-level navigation redirects.
+- Retained the trailing empty `?` on manually cleaned X/Twitter status links when the input included a query string.
+
+
 ## 0.4.4
 
 - Renamed the product from CleanLink to Votrixain; URL-cleaning behavior and the permission model are unchanged.

@@ -7,7 +7,7 @@
 1. **Manual cleanup in the popup.** The user pastes a link and Votrixain parses it locally in the extension page.
 2. **Optional automatic cleanup during navigation.** Chrome's Declarative Net Request (DNR) engine applies the packaged redirect rules to matching top-level navigations on hosts for which the user has granted permission.
 
-The extension preserves unrecognized query parameters on ordinary URLs. Instagram post and Reel URLs are a special case: their query strings are removed in full.
+The extension preserves unrecognized query parameters on ordinary URLs. Instagram post and Reel URLs, GitHub links, and X/Twitter status links are special cases: their query strings are removed in full. For manually cleaned X/Twitter status links, the empty `?` delimiter is retained to match the requested canonical form.
 
 > **Version in this source:** `0.4.4` (`manifest.json` and `package.json`). The project is early-stage; test automatic navigation behavior in a separate Chrome profile before relying on it.
 
@@ -31,7 +31,7 @@ The extension preserves unrecognized query parameters on ordinary URLs. Instagra
 
 - Accepts complete `http://` and `https://` URLs for manual cleanup.
 - Removes query keys beginning with `utm_` (case-insensitively) and the explicitly listed tracking keys described below.
-- Removes every query parameter from Instagram post (`/p/`) and Reel (`/reel/`) links recognized by the Instagram-specific rule.
+- Removes every query parameter from Instagram post (`/p/`) and Reel (`/reel/`) links, all GitHub links, and X/Twitter status links.
 - Preserves ordinary query parameters that are not on the tracking list, such as YouTube video IDs, search terms, and pagination values.
 - Preserves the URL fragment when query parameters are removed.
 - Lets the user enable or disable automatic cleaning one website host at a time.
@@ -48,9 +48,11 @@ The implementation is in [`url-cleaner.js`](url-cleaner.js), exposed to the popu
 1. The input is converted to a string and trimmed. An empty value throws `Paste a link to get started`.
 2. The browser `URL` parser validates the address. A value without a complete web URL throws an instruction to enter an `http://` or `https://` link.
 3. Protocols other than HTTP and HTTPS are rejected.
-4. If the host is `instagram.com` or a subdomain of it and the path matches an Instagram `/reel/<id>` or `/p/<id>` content path (with an optional trailing slash), the entire query string is removed. The path and fragment remain.
-5. For other URLs, query keys are compared in lowercase. Any key whose name starts with `utm_`, or whose name is in the explicit list below, is removed. Other query keys remain.
-6. The function returns the cleaned URL and metadata: `changed`, `removedCount`, unique `removedKeys`, and `instagramRule`.
+4. If the host is `instagram.com` or a subdomain of it and the path matches an Instagram `/reel/<id>` or `/p/<id>` content path (with an optional trailing slash), the entire query string is removed.
+5. If the host is `github.com` (or a subdomain), the entire query string is removed.
+6. If the host is `x.com`, `twitter.com`, or a subdomain of either and the path matches `/<user>/status/<id>`, the entire query string is removed. The manually cleaned result retains a trailing empty `?` when the input had a query delimiter, matching the requested X link format.
+7. For other URLs, query keys are compared in lowercase. Any key whose name starts with `utm_`, or whose name is in the explicit list below, is removed. Other query keys remain.
+8. The function returns the cleaned URL and metadata: `changed`, `removedCount`, unique `removedKeys`, `instagramRule`, and `fullQueryRule`.
 
 The manual cleaner's explicit tracking-key set is:
 
@@ -78,10 +80,12 @@ https://www.instagram.com/reel/DcWXXbGKzMZ/
 Automatic cleaning is implemented by [`rules.json`](rules.json), loaded by Chrome through the `declarative_net_request.rule_resources` entry in [`manifest.json`](manifest.json). There is no background service worker or content script in this source tree; the redirect behavior is provided by the static DNR rules.
 
 - **Rule 1** targets Instagram Reel and post URLs on `instagram.com` and `www.instagram.com`. It redirects by setting the query string to an empty value, so all query parameters on a matching navigation are removed.
+- **Rule 7** removes the entire query string from GitHub URLs.
+- **Rule 8** removes the entire query string from X/Twitter status URLs.
 - **Rules 2–6** are five smaller generic regex match rules. They collectively detect the supported tracking-key groups and use the same `queryTransform.removeParams` list to remove the fixed tracking-parameter list.
-- All six rules apply to `main_frame` requests. They do not operate on subresources such as images, scripts, or XHR/fetch requests.
+- All eight rules apply to `main_frame` requests. They do not operate on subresources such as images, scripts, or XHR/fetch requests.
 - The generic DNR removal list contains the 12 named UTM parameters and 21 other named tracking parameters encoded in `rules.json`. It is a fixed list. This differs slightly from manual cleanup, which removes any parameter name starting with `utm_`.
-- The generic regex conditions are split across multiple rules to keep each regex compact. `tests/rules.test.js` checks that each generic regex is valid and under 2 KB, and that the supported tracking names are covered.
+- The generic regex conditions are split across multiple rules to keep each regex compact. `tests/rules.test.js` checks the site-specific full-query rules, that each generic regex is valid and under 2 KB, and that the supported tracking names are covered.
 
 The automatic permission toggle in the popup checks the active tab, forms an origin pattern for that tab's scheme and hostname, and calls `chrome.permissions.request()` or `chrome.permissions.remove()` for that one pattern. Automatic cleaning is unavailable for Chrome internal pages and other non-HTTP(S) URLs. Manual cleanup remains available without granting site access.
 
@@ -164,8 +168,8 @@ This inventory describes the project files present in this source archive. It di
 | [`popup.html`](popup.html) | Markup for the extension popup. Defines the brand/header, theme button, URL input, clean and clear controls, status line, optional per-site permission panel, cleaned-result panel, copy/open actions, and privacy footer. Loads `url-cleaner.js` before `popup.js`. |
 | [`popup.css`](popup.css) | Popup presentation. Defines light and dark CSS variables, layout, form controls, result and permission cards, accessible focus styles, squircle styling with rounded-corner fallback, and the left-positioned document scrollbar. |
 | [`popup.js`](popup.js) | Popup interaction logic. Manages System/Light/Dark theme cycling and legacy theme-key migration; validates and displays manual-cleaning results; reads the active tab's host; checks, requests, and removes optional host access; handles clear, copy, open, keyboard shortcut, status, and permission-change events. |
-| [`url-cleaner.js`](url-cleaner.js) | Shared URL-cleaning function. Exposes `cleanUrl()` as `globalThis.VotrixainUrl` for the popup and as a CommonJS export for Node tests. Performs HTTP(S) validation, Instagram-specific full query removal, and ordinary tracking-key removal while preserving unrecognized query parameters. |
-| [`rules.json`](rules.json) | Static Chrome Declarative Net Request redirect rules. Contains one Instagram full-query rule and five compact generic tracking-parameter matching rules, all scoped to top-level navigation. |
+| [`url-cleaner.js`](url-cleaner.js) | Shared URL-cleaning function. Exposes `cleanUrl()` as `globalThis.VotrixainUrl` for the popup and as a CommonJS export for Node tests. Performs HTTP(S) validation, full-query removal for Instagram, GitHub, and X/Twitter status URLs, and ordinary tracking-key removal while preserving unrecognized query parameters. |
+| [`rules.json`](rules.json) | Static Chrome Declarative Net Request redirect rules. Contains full-query rules for Instagram, GitHub, and X/Twitter status URLs, plus five compact generic tracking-parameter matching rules, all scoped to top-level navigation. |
 | [`icons/icon16.png`](icons/icon16.png), [`icons/icon32.png`](icons/icon32.png), [`icons/icon48.png`](icons/icon48.png), [`icons/icon128.png`](icons/icon128.png) | PNG extension icons at the sizes referenced by the manifest. The manifest uses 16/32/48/128 px icons and the popup uses the 48 px icon in its brand lockup. |
 | [`icons/logo.svg`](icons/logo.svg) | Original Votrixain SVG logo artwork. The website's `docs/assets/logo.svg` references this file through a relative SVG image reference. |
 
@@ -173,7 +177,7 @@ This inventory describes the project files present in this source archive. It di
 
 | File | Function |
 | --- | --- |
-| [`tests/url-cleaner.test.js`](tests/url-cleaner.test.js) | Unit tests for the `cleanUrl()` behavior, including Instagram paths, recognized keys, fragments, functional parameter preservation, duplicate UTM values, and rejected input. |
+| [`tests/url-cleaner.test.js`](tests/url-cleaner.test.js) | Unit tests for the `cleanUrl()` behavior, including Instagram, GitHub, and X status paths, recognized keys, fragments, functional parameter preservation, duplicate UTM values, and rejected input. |
 | [`tests/rules.test.js`](tests/rules.test.js) | Tests the static DNR regexes and transformations, including regex size, rule coverage for all configured tracking names, and a functional-only query URL that should not match. |
 | [`tests/ui.test.js`](tests/ui.test.js) | Source-level UI checks for the theme button, root scrollbar styling, squircle fallback, extension branding, and legacy theme preference migration. It inspects popup HTML, CSS, JavaScript, and the manifest; it is not a browser-driven visual test. |
 

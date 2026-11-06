@@ -21,6 +21,27 @@ test("removes every query parameter from Instagram Post links, including obrf", 
   assert.equal(result.instagramRule, true);
 });
 
+test("removes the entire query string from GitHub links", () => {
+  const result = cleanUrl("https://github.com/darshseraphic/Votrixain?tab=readme-ov-file");
+  assert.equal(result.cleaned, "https://github.com/darshseraphic/Votrixain");
+  assert.equal(result.removedCount, 1);
+  assert.deepEqual(result.removedKeys, ["tab"]);
+  assert.equal(result.fullQueryRule, true);
+});
+
+test("removes X status parameters and preserves the requested trailing question mark", () => {
+  const result = cleanUrl("https://x.com/elonmusk/status/2118628232002158682?a=_gNrjtL9NHPMe0jkrSqh9cGw&s=20");
+  assert.equal(result.cleaned, "https://x.com/elonmusk/status/2118628232002158682?");
+  assert.equal(result.removedCount, 2);
+  assert.deepEqual(result.removedKeys, ["a", "s"]);
+  assert.equal(result.fullQueryRule, true);
+});
+
+test("removes the full query from X status URLs while preserving fragments", () => {
+  const result = cleanUrl("https://x.com/elonmusk/status/123?a=1#replies");
+  assert.equal(result.cleaned, "https://x.com/elonmusk/status/123?#replies");
+});
+
 test("removes obrf from other URLs while preserving functional parameters", () => {
   const result = cleanUrl("https://example.com/item?id=42&obrf=NTc4MTIwNjQ2YQ==");
   assert.equal(result.cleaned, "https://example.com/item?id=42");

@@ -97,8 +97,8 @@ function showResult(result) {
     resultSummary.textContent = `${result.removedCount} ${label}`;
     removedBadge.textContent = `${result.removedCount} removed`;
     detailRow.hidden = result.removedKeys.length === 0;
-    detailText.textContent = result.instagramRule
-      ? "All Instagram query parameters were removed"
+    detailText.textContent = result.fullQueryRule
+      ? "All query parameters were removed"
       : `Removed: ${result.removedKeys.join(", ")}`;
     setStatus("The cleaned link is ready to copy or open", "success");
   } else {

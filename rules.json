@@ -292,5 +292,43 @@
         "main_frame"
       ]
     }
+  },
+  {
+    "id": 7,
+    "priority": 10,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "transform": {
+          "query": ""
+        }
+      }
+    },
+    "condition": {
+      "regexFilter": "^https?://(?:[^./?#]+\\.)*github\\.com/[^?#]+\\?[^#]*",
+      "isUrlFilterCaseSensitive": false,
+      "resourceTypes": [
+        "main_frame"
+      ]
+    }
+  },
+  {
+    "id": 8,
+    "priority": 10,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "transform": {
+          "query": ""
+        }
+      }
+    },
+    "condition": {
+      "regexFilter": "^https?://(?:[^./?#]+\\.)*(?:x\\.com|twitter\\.com)/[^/?#]+/status/[^?#]+\\?[^#]*",
+      "isUrlFilterCaseSensitive": false,
+      "resourceTypes": [
+        "main_frame"
+      ]
+    }
   }
 ]

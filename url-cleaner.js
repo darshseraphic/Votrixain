@@ -32,10 +32,15 @@
     const original = url.href;
     const isInstagramContent = /(^|\.)instagram\.com$/i.test(url.hostname) &&
       /^\/(?:reel|p)\/[^/]+\/?$/i.test(url.pathname);
+    const isGitHubUrl = /(^|\.)github\.com$/i.test(url.hostname);
+    const isXStatusUrl = /(^|\.)(?:x|twitter)\.com$/i.test(url.hostname) &&
+      /^\/[^/]+\/status\/[^/]+\/?$/i.test(url.pathname);
+    const fullQueryRule = isInstagramContent || isGitHubUrl || isXStatusUrl;
+    const hasQueryDelimiter = trimmed.slice(0, trimmed.indexOf("#") === -1 ? undefined : trimmed.indexOf("#")).includes("?");
     const removedKeys = [];
     let removedCount = 0;
 
-    if (isInstagramContent) {
+    if (fullQueryRule) {
       for (const [key] of url.searchParams) {
         removedKeys.push(key);
         removedCount += 1;
@@ -53,12 +58,22 @@
       }
     }
 
+    let cleaned = url.href;
+    // Keep the empty query delimiter shown in canonical X status links supplied by users.
+    if (isXStatusUrl && hasQueryDelimiter) {
+      const hashIndex = cleaned.indexOf("#");
+      cleaned = hashIndex === -1
+        ? `${cleaned}?`
+        : `${cleaned.slice(0, hashIndex)}?${cleaned.slice(hashIndex)}`;
+    }
+
     return {
-      cleaned: url.href,
-      changed: url.href !== original,
+      cleaned,
+      changed: cleaned !== original,
       removedCount,
       removedKeys: [...new Set(removedKeys)],
-      instagramRule: isInstagramContent
+      instagramRule: isInstagramContent,
+      fullQueryRule
     };
   }
 
